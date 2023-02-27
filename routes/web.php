@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\AuthController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,6 +13,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::prefix('login') -> group(function () {
+    Route::get('/', [AuthController::class, 'login'])->name('auth.login.get');
+    Route::post('/', [AuthController::class, 'handleLogin'])->name('auth.login.post');
 });
+
+Route::prefix('register') -> group(function () {
+    Route::get('/', [AuthController::class, 'register'])->name('auth.register.get');
+    Route::post('/', [AuthController::class, 'handleRegister'])->name('auth.register.post');
+});
+
+Route::group(['middleware' => 'auth'], function() {
+    Route::get('/', [UserController::class, 'index'])->name('user.index');
+    Route::get('firstLogin', [AuthController::class, 'firstLogin'])->name('auth.firstLogin.get');
+    Route::post('firstLogin', [AuthController::class, 'handleFirstLogin'])->name('auth.firstLogin.post');
+});
+
+Route::get('logout', [AuthController::class, 'logout'])->name('logout')->middleware('prevent-back-history');

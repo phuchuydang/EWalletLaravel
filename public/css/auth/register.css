@@ -1,0 +1,232 @@
+%fix-iOS-tap-highlight {
+	user-select: none;
+	touch-action: manipulation;
+	appearence: none !important;
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0) !important;
+}
+
+// document.addEventListener("touchstart", function(){}, true);
+
+*,*::before,*::after {
+	box-sizing: border-box !important;
+}
+html {
+	font-size: 100%;
+	@media screen and (min-width: 560px) {
+		font-size: 112.5%;
+	}
+}
+body {
+	font-family: "Inter", sans-serif;
+	background-color: royalblue;
+}
+h1,h2,h3,h4,h5,h6 {
+	line-height: 1;
+	// margin: 0 auto 1rem;
+	font-weight: 600;
+	margin-top: 0.5rem;
+}
+
+@keyframes fadein {
+	0% {
+		opacity: 0;
+		transform: translate3d(0,-4px,0);
+	}
+	100% {
+		opacity: 1;
+		transform: translate3d(0,0,0);
+	}
+}
+form, form > *,.container {
+	opacity: 0;
+	transform: translate3d(0,-4px,0);
+	animation-name: fadein;
+	animation-direction: forwards;
+	animation-fill-mode: both;
+	animation-iteration-count: 1;
+	animation-duration: 700ms;
+	animation-delay: 600ms;
+}
+
+.title {
+	margin-bottom: 2rem;
+}
+.hidden {
+	display: none;
+}
+
+.icon {
+	width: 1.5em;
+	height: 1.5em;
+	position: absolute;
+	top: 2em;
+	right: 5px;
+	pointer-events: none;
+	z-index: 2;
+}
+.icon.icon-success {
+	stroke: green;
+}
+.icon.icon-error {
+	stroke: red;
+}
+
+.container {
+	max-width: 32em;
+	margin: 2.5em auto;
+	padding: 2.5em;
+	border: 0.375em solid rgba(royalblue, 0.75);
+	border-radius: 1em;
+	background-color: white;
+	transition: all 200ms;
+	box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15),
+		0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+section {
+	@extend .container;
+}
+
+.label {
+	font-weight: 500;
+	display: block;
+	color: #333;
+	margin-bottom: 0.25em;
+	color: #2d3748;
+	font-size: 1em;
+}
+
+.input {
+	appearance: none;
+	display: block;
+	width: 100%;
+	color: #2d3748;
+	border: 1px solid #cbd5e0;
+	line-height: 1.25;
+	background-color: white;
+	padding: 0.65em 0.75em;
+	border-radius: 0.375em;
+	font-size: 1em;
+	@extend %fix-iOS-tap-highlight;
+	transition: all 200ms;
+	&:hover {
+		background-color: #F8F9FA;
+	}
+}
+.input::placeholder {
+	color: #a0aec0;
+	font-weight: 400;
+}
+.input.input-error {
+	border-color: red;
+	transition: all 200ms;
+}
+.input.input-error:focus {
+	border-color: lightpink;
+}
+.input:focus {
+	outline: none;
+	border: 1px solid #a0aec0;
+	box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) ,
+		0 0 0 4px rgba(royalblue, 0.2);
+	background-clip: padding-box;
+	border-color: royalblue;
+	
+	background-color: lighten(#E9E9ED,3%);
+	outline: solid 6px rgba(royalblue, 0.25);
+	outline-offset: -2px;
+	// box-shadow: 0 0 0 4px rgba(royalblue, 0.2);
+	outline: none !important;
+}
+
+.input-group {
+	margin-bottom: 2em;
+	position: relative;
+	transition: all 200ms;
+}
+.error-message {
+	font-size: 0.85em;
+	color: red;
+	transition: all 200ms;
+}
+
+.button {
+	background-color: royalblue;
+	padding: 1em 1.5em;
+	border: none;
+	border-radius: 0.375em;
+	color: white;
+	font-weight: 500;
+	display: block;
+	width: 100%;
+	text-align: center;
+	cursor: pointer;
+	letter-spacing: 0.75px;
+	transition: all 120ms !important;
+	transform: translate3d(0,0,0);
+	@extend %fix-iOS-tap-highlight;
+	&:active {
+		background-color: darken(royalblue, 10%);
+		transform: translate3d(0,2px,0) !important;
+	}
+}
+.button:hover {
+	filter: brightness(110%);
+}
+.button:focus {
+	outline: solid 6px rgba(royalblue, 0.25);
+	outline-offset: -2px;
+	box-shadow: 0 0 0 4px rgba(royalblue, 0.2);
+	outline: none !important;
+}
+
+[type="submit"] {
+	@extend .button;
+}
+
+label {
+	@extend .label;
+	transition: all 200ms;
+}
+
+fieldset,legend {
+	display: block;
+	width: 100%;
+	border: none;
+	padding: 0;
+	margin: 0;
+}
+legend {
+	font-weight: 500;
+	font-size: x-large;
+	margin: 0 auto 1.5rem;
+}
+form {
+	footer {
+		width: 100%;
+		margin: 1rem 0 0;
+		padding: 1rem 0 0;
+		transition: all 200ms;
+		p {
+			line-height: 1 !important;
+			margin: 0 auto !important;
+			text-align: center;
+			transition: all 200ms;
+		}
+	}
+	transition: all 200ms;
+	* {
+		transition: all 200ms;
+	}
+}
+a,a:link {
+	color: royalblue;
+	font-weight: 500;
+	text-decoration: none;
+	cursor: pointer;
+	transition: all 120ms;
+}
+
+.show-invalid:invalid {
+	// border-color: tomato;
+	
+}

@@ -76,5 +76,8 @@ $.validator.setDefaults({
         if (element.attr('name') == 'bcard') {
             error.appendTo('#invalid-feedback-bcard');
         }
+        if (element.attr('name') == 'address') {
+            error.appendTo('#invalid-feedback-address');
+        }
     }
 });

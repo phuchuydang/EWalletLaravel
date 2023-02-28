@@ -22,9 +22,11 @@ return new class extends Migration
             $table->date('birthday');
             $table->string('first_identity_card');
             $table->string('second_identity_card');
+            $table->boolean('is_admin')->default(0);
             $table->boolean('is_actived')->default(0);
             $table->boolean('is_verified')->default(0);
             $table->boolean('is_abnormal')->default(0);
+            $table->dateTime('blocked_time')->nullable();
             $table->date('created_date');
             $table->date('updated_date')->nullable();
             $table->date('deleted_date')->nullable();

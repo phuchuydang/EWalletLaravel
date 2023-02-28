@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\DepositController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -32,6 +33,10 @@ Route::group(['middleware' => 'auth'], function() {
     Route::prefix('profile') -> group(function () {
         Route::get('/', [UserController::class, 'profile'])->name('user.profile.get');
         Route::post('/', [UserController::class, 'handleProfile'])->name('user.profile.update');
+    });
+    Route::prefix('deposit') -> group(function () {
+        Route::get('/', [DepositController::class, 'deposit'])->name('user.deposit.get');
+        Route::post('/', [DepositController::class, 'handleDeposit'])->name('user.deposit.post');
     });
 });
 

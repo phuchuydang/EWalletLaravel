@@ -33,4 +33,9 @@ class Account extends Authenticatable
         'deleted_date',
     ];
 
+    //one user has one wallet
+    public function wallet()
+    {
+        return $this->hasOne(Wallet::class, 'user_id', 'id');
+    }
 }

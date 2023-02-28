@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Interfaces\AccountRepositoryInterface;
+use App\Interfaces\WalletRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Contracts\Session\Session;
 use App\Models\Account;
 use App\Repositories\AccountRepository;
+use App\Repositories\WalletRepository;
 use App\Jobs\SendEmail;
 use Illuminate\Contracts\View\View;
 use Mail;
@@ -17,11 +19,13 @@ class AuthController extends Controller
 {
     private AccountRepositoryInterface $accountRepository;
 
-    public function __construct(AccountRepositoryInterface $accountRepository)
+    private WalletRepositoryInterface $walletRepository;
+
+    public function __construct(AccountRepositoryInterface $accountRepository, WalletRepositoryInterface $walletRepository)
     {
         $this->accountRepository = $accountRepository;
+        $this->walletRepository = $walletRepository;
     }
-    
     
     public function checkSession()
     {
@@ -63,18 +67,52 @@ class AuthController extends Controller
         } else {
             $account = $this->accountRepository->getAccountByUsername($data['username']);
             if ($account) {
+                $blockedTime = strtotime($account->blocked_time);
+                $now = strtotime(date('Y-m-d H:i:s'));
+                $diff = $now - $blockedTime;
                 if (Hash::check($data['password'], $account->password)) {
-                    Session()->put('account', $account);
-                    if ($account->is_actived == 0) {
-                        return redirect()->route('auth.firstLogin.get');
+                    if ($account -> is_admin == 0){
+                        if ($account->blocked_time != null) {
+                            if ($diff < 60) {
+                                $messageECL005 = config('constant.messages.error.ECL005');
+                                Session()->flash('error', $messageECL005);
+                                return redirect()->route('auth.login.get')->withInput();
+                            } else {
+                                $this->accountRepository->resetIsAbnormal($account->id);
+                                Session()->put('account', $account);
+                                if ($account->is_actived == 0) {
+                                    return redirect()->route('auth.firstLogin.get');
+                                }
+                                Auth::login($account);
+                                return redirect()->route('user.index');
+                            }
+                        } else {
+                            Session()->put('account', $account);
+                            if ($account->is_actived == 0) {
+                                return redirect()->route('auth.firstLogin.get');
+                            }
+                            Auth::login($account);
+                            return redirect()->route('user.index');
+                        }
+                    } else {
+                        Session()->put('account', $account);
+                        if ($account->is_actived == 0) {
+                            return redirect()->route('auth.firstLogin.get');
+                        }
+                        Auth::login($account);
+                        return redirect()->route('user.index');
                     }
-                    Auth::login($account);
-                    return redirect()->route('user.index');
                 } else {
-                    
-                    $messageECL002 = config('constant.messages.error.ECL002');
-                    Session()->flash('error', $messageECL002);
-                    return redirect()->route('auth.login.get')->withInput();
+                    if ($diff < 60) {
+                        $messageECL005 = config('constant.messages.error.ECL005');
+                        Session()->flash('error', $messageECL005);
+                        return redirect()->route('auth.login.get')->withInput();
+                    } else {
+                        $this->accountRepository->updateIsAbnormal($account->id);
+                        $messageECL001 = config('constant.messages.error.ECL001');
+                        Session()->flash('error', $messageECL001);
+                        return redirect()->route('auth.login.get')->withInput();
+                    }
                 }
             }
             $messageECL001 = config('constant.messages.error.ECL001');
@@ -96,6 +134,7 @@ class AuthController extends Controller
         ]);
         if ($this->accountRepository->getAccountByEmail($data['email'])) {
             $messageECL003 = config('constant.messages.error.ECL003');
+
             Session()->flash('error', $messageECL003);
             return redirect()->back()->withInput();
         } else {
@@ -103,16 +142,9 @@ class AuthController extends Controller
             $password = substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil(6/strlen($x)) )),1,6);
             $data['username'] = $username;
             $data['password'] = $password;
-            $request->validate([
-                'email' => 'required|email|max:50|unique:accounts',
-                'fullname' => 'required|max:50',
-                'phone' => 'required|max:13|unique:accounts',
-                'address' => 'required|max:50',
-                'birthday' => 'required',
-                'fcard' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                'bcard' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            ]);
-            if($account = $this->accountRepository->createUser($data)) {
+            $account = $this->accountRepository->createUser($data);
+            if($account) {
+                $this->walletRepository->createWallet($account->id);
                 $data = array(
                     'username' => $username,
                     'password' => $password,

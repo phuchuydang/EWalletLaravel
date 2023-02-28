@@ -7,8 +7,10 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 		<title>@yield('title')</title>
         <link rel="shortcut icon" href="{{asset('image/icon.png')}}" type="image/x-icon" />
-		<link rel="stylesheet" href="{{asset('css/main/style.css')}}" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+		<link rel="stylesheet" href="{{asset('css/main/style.css')}}" />		
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+		<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.js" crossorigin="anonymous"></script>
+		<script src="{{ asset('js/common/errors.js') }}"></script>
 	</head>
 	<body>
 		<div id="preloader">
@@ -48,6 +50,7 @@
 								<div class="classynav">
 									<ul>
 										<li><a href="{{route('user.index')}}">Home</a></li>
+										<li><a href="#">Deposit money</a></li>
 										<li>
 											<a href="#">Pages</a>
 											<ul class="dropdown">
@@ -113,7 +116,6 @@
 												</div>
 											</div>
 										</li>
-										<li><a href="#">Currencies</a></li>
 										<li><a href="contact.html">Contact</a></li>
 									</ul>
 									<div class="header-newsletter-form">
@@ -137,7 +139,7 @@
 						<div class="col-12 col-sm-6 col-lg-4">
 							<div class="footer-widget mb-100">
 								<div class="widget-title">
-									<a href="#"><img src="{{asset('image/core-img/logo2.png')}}" alt="" /></a>
+									<a href="#"><img src="{{asset('image/icon.png')}}" alt="" width="200" height="200" /></a>
 								</div>
 								<p>
 									Morbi vel arcu gravida, iaculis lacus vel, posuere ipsum. Sed faucibus mauris vitae urna consectetur, sit amet maximus nisl sagittis. Ut in iaculis enim, et pulvinar mauris. Etiam tristique magna eget
@@ -223,5 +225,6 @@
 		<script src="{{asset('js/main/bootstrap/bootstrap.min.js')}}"></script>
 		<script src="{{asset('js/main/plugins/plugins.js')}}"></script>
 		<script src="{{asset('js/main/active.js')}}"></script>
+		{{-- <script src="{{ asset('js/common/errors.js') }}"></script> --}}
 	</body>
 </html>

@@ -17,7 +17,7 @@ class AccountFactory extends Factory
     public function definition(): array
     {
         return [
-            'username' => $this->faker->userName,
+            'username' => '0332420477',
             'password' => Hash::make('12345678'), 
             'email' => $this->faker->unique()->safeEmail,
             'phone' => $this->faker->unique()->phoneNumber,
@@ -26,9 +26,10 @@ class AccountFactory extends Factory
             'birthday' => $this->faker->date(),
             'first_identity_card' => $this->faker->creditCardNumber,
             'second_identity_card' => $this->faker->creditCardNumber,
-            'is_actived' => $this->faker->boolean,
-            'is_verified' => $this->faker->boolean,
-            'is_abnormal' => $this->faker->boolean,
+            'is_admin' => '1',
+            'is_actived' => '1',
+            'is_verified' => '1',
+            'is_abnormal' => '0',
             'created_date' => $this->faker->date(),
         ];
     }

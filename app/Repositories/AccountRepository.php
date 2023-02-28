@@ -25,7 +25,7 @@ class AccountRepository implements AccountRepositoryInterface
 
     public function getAccountByEmail($email)
     {
-        return $this->account->where('email', $email)->whereNull('deleted_date')->firstOrFail();
+        return $this->account->where('email', $email)->whereNull('deleted_date')->first();
     }
 
     public function createUser($data){
@@ -59,6 +59,27 @@ class AccountRepository implements AccountRepositoryInterface
         $account->phone = $data['phone'];
         $account->address = $data['address'];
         $account->updated_date = date('Y-m-d H:i:s');
+        $account->save();
+        return $account;
+    }
+
+    public function updateIsAbnormal($id){
+        $account = $this->account->find($id);
+        $account->is_abnormal = $account->is_abnormal + 1;
+        if($account->is_abnormal == 3){
+            $account->blocked_time = date('Y-m-d H:i:s');
+        }
+        if($account->is_abnormal == 6){
+            $account->deleted_date = date('Y-m-d H:i:s');
+        }
+        $account->save();
+        return $account;
+    }
+
+    public function resetIsAbnormal($id){
+        $account = $this->account->find($id);
+        $account->is_abnormal = 0;
+        $account->blocked_time = null;
         $account->save();
         return $account;
     }

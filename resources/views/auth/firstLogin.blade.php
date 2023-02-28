@@ -37,7 +37,7 @@
                             <div style="float: left;" id="invalid-feedback-conf_password"></div>
                         </div>
                         <button id="change-btn" class="btn btn-lg btn-block btn-primary mt-4" type="submit">
-                            Login
+                            Change Password
                         </button>
                     </form>
                 </div>
@@ -48,9 +48,9 @@
     <script src="{{ asset('js/auth/firstLogin.js') }}"></script>
     <script type="text/javascript">
         $(document).ready(function() {
-            $('#login-form').submit(function() {
-                $('#invalid-feedback-username').html('');
+            $('#firstLogin-form').submit(function() {
                 $('#invalid-feedback-password').html('');
+                $('#invalid-feedback-conf_password').html('');
             });
         });
     </script>

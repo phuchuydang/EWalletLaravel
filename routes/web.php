@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,10 +24,15 @@ Route::prefix('register') -> group(function () {
     Route::post('/', [AuthController::class, 'handleRegister'])->name('auth.register.post');
 });
 
+Route::get('firstLogin', [AuthController::class, 'firstLogin'])->name('auth.firstLogin.get');
+Route::post('firstLogin', [AuthController::class, 'handleFirstLogin'])->name('auth.firstLogin.post');
+
 Route::group(['middleware' => 'auth'], function() {
     Route::get('/', [UserController::class, 'index'])->name('user.index');
-    Route::get('firstLogin', [AuthController::class, 'firstLogin'])->name('auth.firstLogin.get');
-    Route::post('firstLogin', [AuthController::class, 'handleFirstLogin'])->name('auth.firstLogin.post');
+    Route::prefix('profile') -> group(function () {
+        Route::get('/', [UserController::class, 'profile'])->name('user.profile.get');
+        Route::post('/', [UserController::class, 'handleProfile'])->name('user.profile.update');
+    });
 });
 
 Route::get('logout', [AuthController::class, 'logout'])->name('logout')->middleware('prevent-back-history');

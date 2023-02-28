@@ -50,8 +50,8 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $('#login-form').submit(function() {
-                $('#invalid-feedback-username').html('');
-                $('#invalid-feedback-password').html('');
+                // $('#invalid-feedback-username').html('');
+                // $('#invalid-feedback-password').html('');
             });
         });
     </script>

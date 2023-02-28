@@ -14,7 +14,6 @@ $('#login-form').validate({
     },
     submitHandler: function(form) {
         form.submit();
-        //disable button
         $('#login-btn').prop('disabled', true);
     }
 });

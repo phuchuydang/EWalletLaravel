@@ -19,6 +19,11 @@ class RepositoryServiceProvider extends ServiceProvider
             'App\Interfaces\WalletRepositoryInterface',
             'App\Repositories\WalletRepository',
         );
+
+        $this->app->bind(
+            'App\Interfaces\PhoneCardRepositoryInterface',
+            'App\Repositories\PhoneCardRepository',
+        );
     }
 
     /**

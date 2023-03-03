@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Mail\MailNotify;
+use App\Mail\MailBuyCard;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -12,7 +12,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Hash;
 use Mail;
 
-class SendEmail implements ShouldQueue
+class SendEmailBuyCard implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     protected $data;
@@ -34,6 +34,8 @@ class SendEmail implements ShouldQueue
     public function handle()
     {
         $data = $this->data;
-        Mail::to($data['email'])->send(new MailNotify($data));
+       // dd($data['card']);
+        Mail::to($data['email'])->send(new MailBuyCard($data['card']));
+
     }
 }

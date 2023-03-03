@@ -11,7 +11,7 @@ use Illuminate\Contracts\Session\Session;
 use App\Models\Account;
 use App\Repositories\AccountRepository;
 use App\Repositories\WalletRepository;
-use App\Jobs\SendEmail;
+use App\Jobs\SendEmailRegister;
 use Illuminate\Contracts\View\View;
 use Mail;
 
@@ -151,7 +151,7 @@ class AuthController extends Controller
                     'email' => $account->email,
                     'fullname' => $account->fullname,
                 );
-                $job = (new SendEmail($data))->delay(now()->addSeconds(5));
+                $job = (new SendEmailRegister($data))->delay(now()->addSeconds(5));
                 dispatch($job);
                 return redirect()->route('auth.login.get')->with('success', 'Register successfully');
             }

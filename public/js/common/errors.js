@@ -43,6 +43,10 @@ $.validator.messages.greater_date = function (param, input) {
     return error_greater_date($data, $now);
 };
 
+$.validator.addMethod('multiple_of_50000', function (value, element, param) {
+    return this.optional(element) || (value % 50000 == 0);
+}, 'Money must be multiple of 50,000 VND.');
+
 $.validator.setDefaults({
     errorPlacement: function (error, element) {
         error.css('color', 'red');
@@ -78,6 +82,30 @@ $.validator.setDefaults({
         }
         if (element.attr('name') == 'address') {
             error.appendTo('#invalid-feedback-address');
+        }
+        if (element.attr('name') == 'amount') {
+            error.appendTo('#invalid-feedback-amount');
+        }
+        if (element.attr('name') == 'card_number') {
+            error.appendTo('#invalid-feedback-card_number');
+        }
+        if (element.attr('name') == 'expire_date' || element.attr('name') == 'card_exp') {
+            error.appendTo('#invalid-feedback-expire_date');
+        }
+        if (element.attr('name') == 'cvv' || element.attr('name') == 'card_cvv') {
+            error.appendTo('#invalid-feedback-cvv');
+        }
+        if (element.attr('name') == 'cardtype') {
+            error.appendTo('#invalid-feedback-card_type');
+        }
+        if (element.attr('name') == 'amount') {
+            error.appendTo('#invalid-feedback-amount');
+        }
+        if (element.attr('name') == 'card_denomination') {
+            error.appendTo('#invalid-feedback-denomination');
+        }
+        if (element.attr('name') == 'money') {
+            error.appendTo('#invalid-feedback-money');
         }
     }
 });

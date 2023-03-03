@@ -25,4 +25,16 @@ class WalletRepository implements WalletRepositoryInterface
         ]);
     }
 
+    public function deposit($amount, $id)
+    {
+        $wallet = $this->wallet->where('user_id', $id)->whereNull('deleted_date')->first();
+        if (!$wallet) {
+            return false;
+        }
+        $wallet->balance += $amount;
+        $wallet->updated_date = date('Y-m-d H:i:s');
+        $wallet->save();
+        return true;
+    }
+
 }

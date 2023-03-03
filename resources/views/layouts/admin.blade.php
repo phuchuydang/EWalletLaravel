@@ -206,7 +206,7 @@
 
                     <li class="nav-item dropdown pe-3">
                         <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-                            <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle" />
+                            {{-- <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle" /> --}}
                             <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
                         </a>
                         <!-- End Profile Iamge Icon -->
@@ -278,30 +278,27 @@
                 <!-- End Dashboard Nav -->
 
                 <li class="nav-item">
-                    <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#"> <i class="bi bi-menu-button-wide"></i><span>Components</span><i class="bi bi-chevron-down ms-auto"></i> </a>
+                    <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#"> <i class="bi bi-menu-button-wide"></i><span>Aprrove</span><i class="bi bi-chevron-down ms-auto"></i> </a>
                     <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
                         <li>
-                            <a href="components-alerts.html"> <i class="bi bi-circle"></i><span>Alerts</span> </a>
+                            <a href="{{route('admin.approve.withdraw.get')}}"> <i class="bi bi-circle"></i><span>Withdraw</span> </a>
                         </li>
+                        <li>
+                          <a href="components-alerts.html"> <i class="bi bi-circle"></i><span>Transfer</span> </a>
+                      </li>
                     </ul>
                 </li>
                 <!-- End Components Nav -->
             </ul>
         </aside>
         <!-- End Sidebar-->
+        <main id="main" class="main">
         @yield('admin_content')
-
+      </main><!-- End #main -->
         <!-- ======= Footer ======= -->
         <footer id="footer" class="footer">
             <div class="copyright">
-                &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
-            </div>
-            <div class="credits">
-                <!-- All the links in the footer should remain intact. -->
-                <!-- You can delete the links only if you purchased the pro version. -->
-                <!-- Licensing information: https://bootstrapmade.com/license/ -->
-                <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-                Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+                &copy; Copyright <strong><span> By Huy.DP </span></strong>. All Rights Reserved
             </div>
         </footer>
         <!-- End Footer -->

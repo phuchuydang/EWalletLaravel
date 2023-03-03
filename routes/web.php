@@ -64,6 +64,12 @@ Route::group(['middleware' => 'auth'], function() {
 
     Route::prefix('admin') -> group(function () {
         Route::get('/', [AdminController::class, 'index'])->name('admin.index');
+        Route::prefix('approve') -> group(function () {
+            Route::prefix('withdraw') -> group(function () {
+                Route::get('/', [AdminController::class, 'approveWithdraw'])->name('admin.approve.withdraw.get');
+                Route::post('/', [AdminController::class, 'handleApproveWithdraw'])->name('admin.approve.withdraw.post');
+            });
+        });
     });
 });
 

@@ -49,3 +49,9 @@ Breadcrumbs::for('user.history.get', function ($trail) {
     $trail->parent('user.index');
     $trail->push('History', route('user.history.get'));
 });
+
+//ADMIN
+Breadcrumbs::for('admin.index', function ($trail) {
+    $home = __('messages.breadcrumb.home');
+    $trail->push('Dashboard', route('admin.index'));
+});

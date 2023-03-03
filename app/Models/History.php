@@ -21,7 +21,12 @@ class History extends Model
         'amount',
         'balance',
         'description',
-        'created_at',
-        'updated_at',
+        'created_date',
+        'updated_date',
     ];
+
+    public function account()
+    {
+        return $this->belongsTo(Account::class, 'user_id', 'id');
+    }
 }

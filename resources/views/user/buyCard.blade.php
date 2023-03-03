@@ -35,7 +35,7 @@
                     </div>
                     <div class="form-group">
                         <label for="amount">Card Amount</label>
-                        <input value="{{old('amount')}}" type="number" name="amount" data-label="Card Amount" class="form-control" id="amount">
+                        <input  type="number" name="amount" data-label="Card Amount" class="form-control" id="amount">
                         <small id="invalid-feedback-amount" class="form-text text-muted"></small>
                     </div>
                     <div class="form-group">

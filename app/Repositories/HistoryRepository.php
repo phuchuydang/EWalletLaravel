@@ -20,6 +20,7 @@ class HistoryRepository implements HistoryRepositoryInterface
 
     public function getHistoryByUserId($id)
     {
-        return $this->history->where('user_id', $id)->get();
+        return $this->history->where('user_id', $id)->paginate(10);
     }
+
 }

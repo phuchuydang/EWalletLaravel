@@ -46,7 +46,8 @@ class PhoneCardRepository implements PhoneCardRepositoryInterface
         //insert to history
         $this->history->create([
             'user_id' => $data['user_id'],
-            'amount' => $data['amount'] * $data['card_denomination'],
+            'amount' => $data['amount'],
+            'balance' => $data['amount'] * $data['card_denomination'],
             'type' => 4,
             'created_date' => date('Y-m-d H:i:s'),
         ]);

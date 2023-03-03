@@ -16,10 +16,11 @@ return new class extends Migration
             $table->string('user_id');
             $table->string('type');
             $table->string('amount');
-            $table->string('balance');
-            $table->string('description');
-            $table->string('created_at');
-            $table->string('updated_at')->nullable();
+            $table->string('balance')->nullable();
+            $table->string('description')->nullable();
+            $table->boolean('status')->default(1);
+            $table->string('created_date');
+            $table->string('updated_date')->nullable();
         });
     }
 

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WalletController;
+use App\Http\Controllers\AdminController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -59,6 +60,10 @@ Route::group(['middleware' => 'auth'], function() {
 
     Route::prefix('history') -> group(function () {
         Route::get('/', [WalletController::class, 'history'])->name('user.history.get');
+    });
+
+    Route::prefix('admin') -> group(function () {
+        Route::get('/', [AdminController::class, 'index'])->name('admin.index');
     });
 });
 

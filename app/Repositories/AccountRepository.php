@@ -83,4 +83,8 @@ class AccountRepository implements AccountRepositoryInterface
         $account->save();
         return $account;
     }
+
+    public function getUserByPhone($phone){
+        return $this->account->where('phone', $phone)->whereNull('deleted_date')->first();
+    }
 }

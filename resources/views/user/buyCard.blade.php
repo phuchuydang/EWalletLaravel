@@ -2,6 +2,7 @@
 @section('title', 'Buy Phone Card')
 @section('content')
     <div class="container">
+        {{ Breadcrumbs::render() }}
         <div class="row">
             <div class="col-12 col-lg-6">
                 @if (session('error'))
@@ -16,7 +17,7 @@
                         {{ session('success') }}
                     </div>
                 @endif
-                <form id="buyCard-form" action="{{route('user.buyCard.post')}}" method="post">
+                <form autocomplete="off" id="buyCard-form" action="{{route('user.buyCard.post')}}" method="post">
                     @csrf
                     <div class="form-group">
                         <label for="exampleFormControlSelect2">Card Type</label>

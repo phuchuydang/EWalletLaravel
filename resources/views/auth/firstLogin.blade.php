@@ -26,7 +26,7 @@
                             {{ session('error') }}
                         </div>
                     @endif
-                    <form id="firstLogin-form" class="form text-center" action="{{route('auth.firstLogin.post')}}" method="POST">
+                    <form autocomplete="off" id="firstLogin-form" class="form text-center" action="{{route('auth.firstLogin.post')}}" method="POST">
                         @csrf
                         <div class="form-group input-group-md">
                             <input type="password" class="form-control" data-label="Password" name="password" id="password" placeholder="Password">

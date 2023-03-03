@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Withdraw')
+@section('title', 'Transfer Money')
 @section('content')
 <div class="container">
     {{ Breadcrumbs::render() }}
@@ -17,22 +17,12 @@
                     {{ session('success') }}
                 </div>
             @endif
-            <form id="withdraw-form" action="{{route('user.withdraw.post')}}" method="post" autocomplete="off">
+            <form id="transfer-form" action="{{route('user.transfer.post')}}" method="post" autocomplete="off">
                 @csrf
                 <div class="form-group">
-                    <label for="exampleFormControlSelect2">Card Number</label>
-                    <input value="{{old('card_number')}}" type="text" name="card_number" data-label="Card Number" class="form-control" id="card_number">
-                    <small id="invalid-feedback-card_number" class="form-text text-muted"></small>
-                </div>
-                <div class="form-group">
-                    <label for="card_exp">Card Expertation </label>
-                    <input value="{{old('card_exp')}}" type="date" name="card_exp" data-label="Card Expertation" class="form-control" id="card_exp">
-                    <small id="invalid-feedback-expire_date" class="form-text text-muted"></small>
-                </div>
-                <div class="form-group">
-                    <label for="card_cvv">Card CVV </label>
-                    <input value="{{old('card_cvv')}}" type="text" name="card_cvv" data-label="Card CVV" class="form-control" id="card_cvv">
-                    <small id="invalid-feedback-cvv" class="form-text text-muted"></small>
+                    <label for="phone">Phone Number </label>
+                    <input value="{{old('phone')}}" type="text" name="phone" data-label="Phone Number" class="form-control" id="phone">
+                    <small id="invalid-feedback-phone" class="form-text text-muted"></small>
                 </div>
                 <div class="form-group">
                     <label for="money">Money</label>
@@ -44,17 +34,17 @@
                     <textarea value="{{old('note')}}" cols="5" rows="5" style="resize: none;"  name="note" data-label="Note" class="form-control" id="note"></textarea>
                     <small id="invalid-feedback-note" class="form-text text-muted"></small>
                 </div>
-                <button type="submit" id="btn-withdraw" class="btn btn-primary">Withdraw</button>
+                <button type="submit" id="btn-withdraw" class="btn btn-primary">Transfer Money</button>
                 <button type="button" onclick="window.history.back()" class="btn btn-danger">Cancel</button>
             </form>
         </div>
         <div class="col-12 col-lg-6">
-            <h2>Withdraw</h2>
-            <img src="{{asset('image/withdraw.webp')}}" alt="" width="300" height="300"  />
+            <h2>Transfer Money</h2>
+            <img src="{{asset('image/transfer.jpg')}}" alt="" width="300" height="300"  />
         </div>
     </div>
 </div>
 <br>
 <br>
-<script src="{{ asset('js/user/withdraw.js') }}"></script>
+<script src="{{ asset('js/user/transfer.js') }}"></script>
 @endsection

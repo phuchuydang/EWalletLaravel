@@ -2,6 +2,7 @@
 @section('title', 'Deposit Money')
 @section('content')
     <div class="container">
+        {{ Breadcrumbs::render() }}
         <div class="row">
             <div class="col-12 col-lg-6">
                 @if (session('error'))
@@ -16,7 +17,7 @@
                         {{ session('success') }}
                     </div>
                 @endif
-                <form id="deposit-form" action="{{route('user.deposit.post')}}" method="post">
+                <form id="deposit-form" autocomplete="off" action="{{route('user.deposit.post')}}" method="post">
                     @csrf
                     <div class="form-group">
                         <label for="card_number">Card Number</label>

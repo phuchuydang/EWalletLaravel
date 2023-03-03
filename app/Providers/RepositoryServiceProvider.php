@@ -24,6 +24,21 @@ class RepositoryServiceProvider extends ServiceProvider
             'App\Interfaces\PhoneCardRepositoryInterface',
             'App\Repositories\PhoneCardRepository',
         );
+
+        $this->app->bind(
+            'App\Interfaces\WithdrawRepositoryInterface',
+            'App\Repositories\WithdrawRepository',
+        );
+
+        $this->app->bind(
+            'App\Interfaces\OTPRepositoryInterface',
+            'App\Repositories\OTPRepository',
+        );
+
+        $this->app->bind(
+            'App\Interfaces\HistoryRepositoryInterface',
+            'App\Repositories\HistoryRepository',
+        );
     }
 
     /**

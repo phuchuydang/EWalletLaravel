@@ -37,7 +37,7 @@
 							</div>
 						@endif
 						<article class="card-body">
-							<form id="register-form" action="{{ route('auth.register.post') }}" method="POST" enctype="multipart/form-data">
+							<form id="register-form" action="{{ route('auth.register.post') }}" method="POST" autocomplete="off" enctype="multipart/form-data">
                                 @csrf
 								<div class="form-group">
 									<label>Email address</label>

@@ -14,11 +14,17 @@
             'ECL009' => 'Card is out of money',
             'ECL010' => 'Your wallet is blocked',
             'ECL011' => 'Out of stock',
+            'ECL012' => 'Invalid card information',
+            'ECL013' => 'This card is not supported for withdrawal',
+            'ECL014' => 'Your wallet is not enough to withdraw',
+            'ECL015' => 'You can only withdraw up to 5 million vnd/time',
+            'ECL016' => 'Your phone number is not exist',
         ],
         'success' => [
             'SCL001' => 'Register successfully',
             'SCL002' => 'Update information successfully',
             'SCL003' => 'Deposit successfully',
             'SCL004' => 'Buy card successfully. Your card will be sent to your email',
+            'SCL005' => 'Withdraw successfully',
         ],
     ];

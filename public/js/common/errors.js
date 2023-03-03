@@ -107,5 +107,6 @@ $.validator.setDefaults({
         if (element.attr('name') == 'money') {
             error.appendTo('#invalid-feedback-money');
         }
+        
     }
 });

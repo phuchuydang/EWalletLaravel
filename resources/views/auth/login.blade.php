@@ -26,7 +26,7 @@
                             {{ session('error') }}
                         </div>
                     @endif
-                    <form id="login-form" class="form text-center" action="{{route('auth.login.post')}}" method="POST">
+                    <form id="login-form" class="form text-center" action="{{route('auth.login.post')}}" method="POST" autocomplete="off">
                         @csrf
                         <div class="form-group input-group-md">
                             <input type="text" class="form-control" data-label="Username" name="username" id="username" aria-describedby="usernameHelp" placeholder="Username">

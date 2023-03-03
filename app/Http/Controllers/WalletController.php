@@ -5,21 +5,34 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Interfaces\WalletRepositoryInterface;
 use App\Interfaces\PhoneCardRepositoryInterface;
+use App\Interfaces\WithdrawRepositoryInterface;
+use App\Interfaces\AccountRepositoryInterface;
+use App\Interfaces\OTPRepositoryInterface;
+use App\Interfaces\HistoryRepositoryInterface;
 use App\Repositories\WalletRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use App\Jobs\SendMailOTP;
 use App\Jobs\SendEmailBuyCard;
-
 class WalletController extends Controller
 {
     private WalletRepositoryInterface $walletRepository;
     private PhoneCardRepositoryInterface $phoneCardRepository;
+    private WithdrawRepositoryInterface $withdrawRepository;
+    private AccountRepositoryInterface $accountRepository;
+    private OTPRepositoryInterface $otpRepository;
+    private HistoryRepositoryInterface $historyRepository;
 
-    public function __construct(WalletRepositoryInterface $walletRepository, PhoneCardRepositoryInterface $phoneCardRepository)
+    public function __construct(WalletRepositoryInterface $walletRepository, PhoneCardRepositoryInterface $phoneCardRepository, WithdrawRepositoryInterface $withdrawRepository, AccountRepositoryInterface $accountRepository, OTPRepositoryInterface $otpRepository, HistoryRepositoryInterface $historyRepository)
     {
         $this->walletRepository = $walletRepository;
         $this->phoneCardRepository = $phoneCardRepository;
+        $this->withdrawRepository = $withdrawRepository;
+        $this->accountRepository = $accountRepository;
+        $this->otpRepository = $otpRepository;
+        $this->historyRepository = $historyRepository;
     }
+
     public function index()
     {
         return view('user.deposit');
@@ -117,6 +130,122 @@ class WalletController extends Controller
     public function handleWithdraw(Request $request)
     {
         $data = $request->all();
-        dd($data);
+        $card = config('constant.card');
+        //convert date to dd/mm/yyyy
+        $data['card_exp'] = date('d/m/Y', strtotime($data['card_exp']));
+        if ($data['card_number'] != $card['card1']['cardnumber']) {
+            $messageECL012 = config('constant.messages.error.ECL012');
+            Session()->flash('error', $messageECL012);
+            return redirect()->back()->withInput();
+        } 
+        if ($data['card_number'] == $card['card1']['cardnumber']) {
+            if ($data['card_exp'] != $card['card1']['expiration']) {
+                $messageECL013 = config('constant.messages.error.ECL013');
+                Session()->flash('error', $messageECL013);
+                return redirect()->back()->withInput();
+            }
+            if ($data['card_cvv'] != $card['card1']['CVV']) {
+                $messageECL013 = config('constant.messages.error.ECL013');
+                Session()->flash('error', $messageECL013);
+                return redirect()->back()->withInput();
+            }
+            $wallet = $this->walletRepository->getWalletByUserId(Auth::user()->id);
+            if ($wallet->balance < $data['money']) {
+                $messageECL014 = config('constant.messages.error.ECL014');
+                Session()->flash('error', $messageECL014);
+                return redirect()->back()->withInput();
+            } else {
+                $withdraw = $this->withdrawRepository->withdraw(Auth::user()->id, $data);
+                if ($withdraw == false) {
+                    $messageECL015 = config('constant.messages.error.ECL015');
+                    Session()->flash('error', $messageECL015);
+                    return redirect()->back()->withInput();
+                } else {
+                    $messageSCL005 = config('constant.messages.success.SCL005');
+                    Session()->flash('success', $messageSCL005);
+                    return redirect()->back();
+                }
+            }     
+        }
+    }
+
+    public function transfer()
+    {
+        return view('user.transfer');
+    }
+
+    public function handleTransfer(Request $request)
+    {
+        $data = $request->all();
+        $data['sender_id'] = Auth::user()->id;
+        //find phone number in database
+        $user = $this->accountRepository->getUserByPhone($data['phone']);
+        $data['receiver_id'] = $user['id'];
+        // dd($data['receiver_id']  . $data['sender_id']);
+        if (!$user) {
+            $messageECL016 = config('constant.messages.error.ECL016');
+            Session()->flash('error', $messageECL016);
+            return redirect()->back()->withInput();
+        }  else {
+            $wallet = $this->walletRepository->getWalletByUserId(Auth::user()->id);
+            if ($wallet->balance < $data['money']) {
+                $messageECL014 = config('constant.messages.error.ECL014');
+                Session()->flash('error', $messageECL014);
+                return redirect()->back()->withInput();
+            } else {
+                //create opt with 6 digits
+                $data['otp'] = rand(100000, 999999);
+                //insert opt to database
+                $this->otpRepository->createOTP($data);
+                //send mail
+                $bought = array (
+                    'email' => Auth::user()->email,
+                    'username' => Auth::user()->username,
+                    'otp' => $data['otp'],
+                );
+                $job = (new SendMailOTP($bought))->delay(now()->addSeconds(5));
+                dispatch($job);
+                return redirect()->route('user.transfer.verify.get');
+            }
+        }
+    }
+
+    public function verifyTransfer()
+    {
+        $user_id = Auth::user()->id;
+        return view('user.verifyTransfer')->with('user_id', $user_id);
+    }
+
+    public function handleVerifyTransfer(Request $request)
+    {
+        $data = $request->all();
+        $data['user_id'] = Auth::user()->id;
+        $otp = $this->otpRepository->getOTPByUserId($data['user_id']);  
+        if ($otp->otp != $data['otp']) {
+            $messageECL017 = config('constant.messages.error.ECL017');
+            Session()->flash('error', $messageECL017);
+            return redirect()->back()->withInput();
+        } else {
+            $inforTransfer = $this->otpRepository->getInforTransfer($data['user_id']);
+            $data['sender_id'] = $inforTransfer->sender_id;
+            $data['receiver_id'] = $inforTransfer->receiver_id;
+            $transfer = $this->walletRepository->transfer($data);
+            if ($transfer == false) {
+                $messageECL018 = config('constant.messages.error.ECL018');
+                Session()->flash('error', $messageECL018);
+                return redirect()->back()->withInput();
+            } else {
+                $messageSCL006 = config('constant.messages.success.SCL006');
+                Session()->flash('success', $messageSCL006);
+                return redirect()->back();
+            }
+        }
+    }
+
+    public function history()
+    {
+        $user_id = Auth::user()->id;
+        $history = $this->historyRepository->getHistoryByUserId($user_id);
+        return view('user.history')->with('history', $history);
     }
 }

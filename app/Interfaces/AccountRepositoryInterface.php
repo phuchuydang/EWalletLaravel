@@ -17,4 +17,6 @@ interface AccountRepositoryInterface
     public function updateIsAbnormal($id);
 
     public function resetIsAbnormal($id);
+
+    public function getUserByPhone($phone);
 }

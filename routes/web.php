@@ -47,6 +47,19 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('/', [WalletController::class, 'withdraw'])->name('user.withdraw.get');
         Route::post('/', [WalletController::class, 'handleWithdraw'])->name('user.withdraw.post');
     });
+
+    Route::prefix('transfer') -> group(function () {
+        Route::get('/', [WalletController::class, 'transfer'])->name('user.transfer.get');
+        Route::post('/', [WalletController::class, 'handleTransfer'])->name('user.transfer.post');
+        Route::prefix('verify') -> group(function () {
+            Route::get('/', [WalletController::class, 'verifyTransfer'])->name('user.transfer.verify.get');
+            Route::post('/', [WalletController::class, 'handleVerifyTransfer'])->name('user.transfer.verify.post');
+        });
+    });
+
+    Route::prefix('history') -> group(function () {
+        Route::get('/', [WalletController::class, 'history'])->name('user.history.get');
+    });
 });
 
 Route::get('logout', [AuthController::class, 'logout'])->name('logout')->middleware('prevent-back-history');

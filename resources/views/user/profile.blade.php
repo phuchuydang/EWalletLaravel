@@ -2,6 +2,7 @@
 @section('title', 'User Profile')
 @section('content')
     <div class="container">
+        {{ Breadcrumbs::render() }}
         <div class="row">
             <div class="col-12 col-lg-6">
                 @if (session('error'))
@@ -16,7 +17,7 @@
                         {{ session('success') }}
                     </div>
                 @endif
-                <form id="profile-form" action="{{route('user.profile.update')}}" method="post">
+                <form id="profile-form" autocomplete="off" action="{{route('user.profile.update')}}" method="post">
                     @csrf
                     <div class="form-row">
                         <div class="form-group col-md-6">

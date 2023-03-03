@@ -59,15 +59,16 @@
 												<li><a href="{{route('user.buyCard.get')}}">Buy Phone Card</a></li>
 											</ul>
 										</li>
-										<li><a href="">Transfer money</a></li>
+										<li><a href="{{route('user.transfer.get')}}">Transfer money</a></li>
 										@else
 										<li>Please wait for admin to activate your account</li>
 										@endif
+										<li><a href="{{route('user.history.get')}}">History</a></li>
 									</ul>
 									<div class="header-newsletter-form">
 										<form action="#" method="post">
-											<input type="email" name="email" id="email" placeholder="Newsletter" />
-											<button type="submit">Subscribe</button>
+											<input type="text" name="search" id="search" placeholder="Search....." />
+											<button type="submit">Search</button>
 										</form>
 									</div>
 								</div>
